@@ -5,68 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taxi Tanger - Votre Chauffeur Privé à Tanger</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Lien corrigé pour afficher les icônes -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <!-- Barre de navigation -->
     <header>
         <div class="logo">🚖 Taxi Tanger</div>
         <nav>
             <a href="#accueil">Accueil</a>
-            <a href="#services">Services</a>
-            <a href="#contact" class="btn-nav">Réserver</a>
+            <a href="#flotte">Trouver un Taxi</a>
+            <a href="#espace-chauffeur">Espace Chauffeur</a>
         </nav>
     </header>
 
-    <!-- Section Accueil -->
     <section id="accueil" class="hero">
         <div class="hero-content">
             <h1>Votre Taxi Privé à <span>Tanger</span></h1>
-            <p>Service professionnel, ponctuel et disponible 24h/7j pour tous vos déplacements urbains et transferts aéroport.</p>
-            <a href="https://wa.me" class="btn-whatsapp" target="_blank">
-                <i class="fab fa-whatsapp"></i> Réserver via WhatsApp
-            </a>
+            <p>Service professionnel, ponctuel et disponible pour tous vos déplacements urbains et transferts.</p>
+            <a href="#flotte" class="btn-whatsapp">Voir la flotte disponible</a>
         </div>
     </section>
 
-    <!-- Section Services -->
-    <section id="services" class="services">
-        <h2>Nos Services</h2>
-        <div class="services-grid">
-            <div class="card">
-                <i class="fas fa-plane-departure"></i>
-                <h3>Transfert Aéroport</h3>
-                <p>Navettes entre Tanger et l'Aéroport Ibn Batouta ou d'autres villes du Maroc.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-city"></i>
-                <h3>Trajets Urbains</h3>
-                <p>Déplacements rapides et sécurisés partout dans la ville de Tanger.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-route"></i>
-                <h3>Circuits Touristiques</h3>
-                <p>Découvrez le Cap Spartel, la Grotte d'Hercule et la Médina avec un chauffeur local.</p>
-            </div>
+    <section id="flotte" class="flotte">
+        <h2>Taxis Disponibles à Tanger</h2>
+        <p class="subtitle">Consultez en temps réel les chauffeurs connectés actuellement en service</p>
+        <div id="liste-taxis" class="flotte-grid">
+            <p style='color:#666; font-style:italic;'>Chargement des données en cours...</p>
         </div>
     </section>
 
-    <!-- Section Contact -->
-    <section id="contact" class="contact">
-        <h2>Contact & Réservation</h2>
-        <p>Besoin d'un taxi immédiatement ou pour plus tard ? Contactez-nous.</p>
-        <div class="contact-info">
-            <a href="tel:+212600000000" class="contact-link"><i class="fas fa-phone"></i> +212 6 00 00 00 00</a>
-            <a href="https://wa.me" class="contact-link wa" target="_blank"><i class="fab fa-whatsapp"></i> Discuter sur WhatsApp</a>
+    <section id="espace-chauffeur" class="espace-chauffeur">
+        <h3>🔒 Connexion Chauffeur</h3>
+        <p>Entrez votre mot de passe secret pour activer ou désactiver votre statut</p>
+        <div class="chauffeur-form">
+            <input type="password" id="code-chauffeur" placeholder="Votre mot de passe secret">
+            <div class="actions-statut">
+                <button class="btn-statut en-service" onclick="changerDisponibilite(true)">🟢 Se mettre EN SERVICE</button>
+                <button class="btn-statut hors-service" onclick="changerDisponibilite(false)">🔴 Se mettre HORS SERVICE</button>
+            </div>
+            <div id="statut-retour"></div>
         </div>
     </section>
 
-    <!-- Pied de page -->
     <footer>
         <p>&copy; 2026 Taxi Tanger. Tous droits réservés.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
