@@ -6,18 +6,20 @@ const FILE_PATH = "taxis.json";
 
 let donneesTaxis = {};
 
-// Charger les taxis depuis le fichier JSON au démarrage
+// Charger les taxis directement avec le lien fixe
 async function chargerTaxis() {
     try {
-        const reponse = await fetch("https://githubusercontent.com" + REPO_OWNER + "/" + REPO_NAME + "/main/" + FILE_PATH + "?t=" + new Date().getTime());
+        const urlFichier = "https://githubusercontent.com" + new Date().getTime();
+        const reponse = await fetch(urlFichier);
         donneesTaxis = await reponse.json();
         afficherTaxisClients();
     } catch (erreur) {
-        console.error("Erreur :", erreur);
+        console.error("Erreur de chargement :", erreur);
+        document.getElementById('liste-taxis').innerHTML = "<p style='color:red;'>Impossible de charger les taxis. Vérifiez le fichier taxis.json.</p>";
     }
 }
 
-// Afficher les taxis EN SERVICE sur la page client
+// Afficher les taxis
 function afficherTaxisClients() {
     const conteneur = document.getElementById('liste-taxis');
     if (!conteneur) return;
@@ -40,7 +42,7 @@ function afficherTaxisClients() {
                     <strong>Chauffeur :</strong> ${taxi.prenom}<br>
                     <strong>Secteur :</strong> ${taxi.zoneNom}
                 </p>
-                <a href="https://wa.me{taxi.whatsapp}?text=Bonjour%20${taxi.prenom},%20je%20vous%20vois%20En%20Service%20sur%20le%20site.%20Êtes-vous%20disponible%20?" 
+                <a href="https://wa.me{taxi.whatsapp}?text=Bonjour%20${taxi.prenom},%20je%20vous%20vois%20En%20Service.%20Êtes-vous%20libre%20?" 
                    target="_blank" class="btn-reserver-taxi">
                    <i class="fab fa-whatsapp"></i> Contacter
                 </a>
@@ -54,7 +56,7 @@ function afficherTaxisClients() {
     }
 }
 
-// Gestion de changement de statut par mot de passe
+// Changement de statut pour le chauffeur
 async function changerDisponibilite(statutVoulu) {
     const saisieMotDePasse = document.getElementById('code-chauffeur').value.trim();
     const retour = document.getElementById('statut-retour');
@@ -79,32 +81,32 @@ async function changerDisponibilite(statutVoulu) {
         return;
     }
 
-    retour.innerHTML = "⏳ Enregistrement du statut en cours...";
+    retour.innerHTML = "⏳ Enregistrement en cours...";
     retour.style.color = "orange";
     donneesTaxis[codeChauffeurTrouve].enService = statutVoulu;
 
     try {
-        const url = `https://github.com{REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
-        const fichierActuel = await fetch(url, { headers: { "Authorization": `token ${GITHUB_TOKEN}` } });
+        const urlAPI = "https://github.com";
+        const fichierActuel = await fetch(urlAPI, { headers: { "Authorization": "token " + GITHUB_TOKEN } });
         const dataFichier = await fichierActuel.json();
         const sha = dataFichier.sha;
 
-        const reponseMiseAJour = await fetch(url, {
+        const reponseMiseAJour = await fetch(urlAPI, {
             method: "PUT",
-            headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+            headers: { "Authorization": "token " + GITHUB_TOKEN, "Content-Type": "application/json" },
             body: JSON.stringify({
-                message: `Statut mis à jour par ${donneesTaxis[codeChauffeurTrouve].prenom}`,
+                message: "Statut modifié par un chauffeur",
                 content: btoa(unescape(encodeURIComponent(JSON.stringify(donneesTaxis, null, 2)))),
                 sha: sha
             })
         });
 
         if (reponseMiseAJour.ok) {
-            retour.innerHTML = statutVoulu ? "✅ Vous êtes en service !" : "✅ Vous êtes hors service.";
+            retour.innerHTML = statutVoulu ? "✅ En service !" : "✅ Hors service.";
             retour.style.color = "green";
             afficherTaxisClients();
         } else {
-            retour.innerHTML = "❌ Erreur de serveur GitHub.";
+            retour.innerHTML = "❌ Erreur de droits GitHub (Vérifiez le Token).";
             retour.style.color = "red";
         }
     } catch (err) {
