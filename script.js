@@ -9,7 +9,7 @@ let donneesTaxis = {};
 // Charger les taxis depuis le fichier JSON au démarrage
 async function chargerTaxis() {
     try {
-        const reponse = await fetch(`https://githubusercontent.com{REPO_OWNER}/${REPO_NAME}/main/${FILE_PATH}?t=${new Date().getTime()}`);
+        const reponse = await fetch("https://githubusercontent.com" + REPO_OWNER + "/" + REPO_NAME + "/main/" + FILE_PATH + "?t=" + new Date().getTime());
         donneesTaxis = await reponse.json();
         afficherTaxisClients();
     } catch (erreur) {
